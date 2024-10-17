@@ -11,6 +11,7 @@ import (
 const utfshiftcapital = -64
 const utfshiftnumber = -48
 
+// реализация получения уникального шифра на основе ФИО и даты рождения
 func main() {
 	file, err := os.Open("input.txt")
 	if err != nil {
@@ -36,7 +37,7 @@ func main() {
 		textslices := strings.Split(text, ",")
 
 		uniquechars := make(map[byte]struct{})
-		for _, i := range textslices[:3] { // count the amount of unique characters
+		for _, i := range textslices[:3] { // считаем количество уникальных символов
 			for z := 0; z < len(i); z++ {
 				uniquechars[i[z]] = struct{}{}
 			}
@@ -44,8 +45,10 @@ func main() {
 
 		textslices[0] = strings.ToUpper(textslices[0])
 
+		// добавление числа на основе первой буквы фамилии (её позиция в алфавите*256)
 		result += (int(textslices[0][0])+utfshiftcapital)*256 + len(uniquechars)
 
+		// сумма цифр, умноженная на 64
 		for _, i := range textslices[3:5] {
 			for _, d := range i {
 				result += int(d+utfshiftnumber) * 64
